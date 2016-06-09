@@ -1,6 +1,6 @@
 package abordagem.forcaBruta.estruturaDeDados;
 
-import java.util.ArrayList;
+import java.util.Stack;
 
 import abordagem.forcaBruta.util.ManipulacaoDeTabuleiro;
 import modelo.Tabuleiro;
@@ -8,13 +8,13 @@ import modelo.Tabuleiro;
 public class Arvore {
 	
 		Tabuleiro pai;
-		ArrayList<Arvore>  filhos;
+		Stack<Arvore>  filhos;
 		int altura;
 		
 		public Arvore(Tabuleiro pai, int h){
 			this.pai = pai;
 			this.altura = h;
-			filhos = new ArrayList<>();
+			filhos = new Stack<>();
 		}
 		
 		public Tabuleiro buscaProfundidade(Tabuleiro avo){
@@ -25,10 +25,10 @@ public class Arvore {
 				else{
 					for(Tabuleiro aux: ManipulacaoDeTabuleiro.removerIgual(avo, ManipulacaoDeTabuleiro.gerarFilhos(pai))){
 						Arvore no = new Arvore(aux, this.altura);
-						filhos.add(no);
+						filhos.push(no);
 					}
-					for(Arvore aux: this.filhos){
-						Tabuleiro otimo = aux.buscaProfundidade(pai);
+					while(!filhos.isEmpty()){
+						Tabuleiro otimo = filhos.pop().buscaProfundidade(pai);
 						if(otimo!=null){
 							return otimo;
 						}
