@@ -18,21 +18,25 @@ public class Arvore {
 		filhos = new ArrayList<>();
 	}
 
-	public Tabuleiro buscaProfundidade(Tabuleiro avo) {
+	public ArrayList<Tabuleiro> buscaProfundidade(Tabuleiro avo, ArrayList<Tabuleiro> estados) {
 		if (this.altura > 0) {
 			this.altura--;
-			if (pai.analisaOtimo())
-				return pai;
-			else {
+			if (pai.analisaOtimo()){
+				estados.add(pai);
+				return estados;
+			}else {
 				for (Tabuleiro aux : ManipulacaoDeTabuleiro.removerIgual(avo,
 						ManipulacaoDeTabuleiro.gerarFilhos(pai))) {
 					Arvore no = new Arvore(aux, this.altura);
 					filhos.add(no);
 				}
 				for(Arvore aux : filhos) {
-					Tabuleiro otimo = aux.buscaProfundidade(pai);
-					if (otimo != null) 
-						return otimo;
+					ArrayList<Tabuleiro> otimo = aux.buscaProfundidade(pai,estados);
+					if (otimo!=null && otimo.get(otimo.size() - 1)!= null){
+						estados.add(pai);
+						return estados;
+					}
+						
 				}
 
 			}
@@ -40,23 +44,28 @@ public class Arvore {
 		return null;
 	}
 	
-	public Tabuleiro buscaEmLargura(Tabuleiro avo){
+	public ArrayList<Tabuleiro> buscaEmLargura(Tabuleiro avo, ArrayList<Tabuleiro> estados){
 		if(this.altura > 0){
 			this.altura--;
-			if(pai.analisaOtimo())
-				return pai;
-			else{
+			if (pai.analisaOtimo()){
+				estados.add(pai);
+				return estados;
+			}else {
 				for(Tabuleiro aux: ManipulacaoDeTabuleiro.removerIgual(avo,ManipulacaoDeTabuleiro.gerarFilhos(pai))){
-					if(aux.analisaOtimo())
-						return aux;
+					if(aux.analisaOtimo()){
+						estados.add(aux);
+						return estados;
+					}
 					Arvore no = new Arvore(aux, this.altura);
 					filhos.add(no);
 				}
 				
 				for(Arvore aux : filhos){
-					Tabuleiro otimo = aux.buscaEmLargura(pai);
-					if (otimo != null) 
-						return otimo;
+					ArrayList<Tabuleiro> otimo = aux.buscaProfundidade(pai,estados);
+					if (otimo!=null && otimo.get(otimo.size() - 1)!= null){
+						estados.add(pai);
+						return estados;
+					}
 				}
 			}
 			

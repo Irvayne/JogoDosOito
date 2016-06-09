@@ -1,5 +1,8 @@
 package principal;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import abordagem.forcaBruta.estruturaDeDados.Arvore;
 import modelo.Tabuleiro;
 import modelo.Unidade;
@@ -21,23 +24,25 @@ public class Principal {
 		matriz[2][2] = new Unidade(8);
 		
 		Tabuleiro tabuleiro = new Tabuleiro(3, matriz);
-		System.out.println("Nao ordenado");
-		for(int i = 0; i < tabuleiro.getOrdem(); i++){
-			for(int j = 0; j < tabuleiro.getOrdem(); j++){
-				System.out.print(tabuleiro.getMatriz()[i][j].getInf()+" ");
-			}
-			System.out.println();
-			}
-		Arvore arvore = new Arvore(tabuleiro,22);
-		//Tabuleiro ordenado = arvore.buscaProfundidade(null);
-		Tabuleiro ordenado = arvore.buscaEmLargura(null);
-		System.out.println("Ordenado"); 
+		Arvore arvore = new Arvore(tabuleiro,25);
+		Date dataInicial = new Date();
+		//ArrayList<Tabuleiro> estados = arvore.buscaProfundidade(null, new ArrayList<>());
+		ArrayList<Tabuleiro> estados = arvore.buscaEmLargura(null, new ArrayList<>());
+		Date dataFinal = new Date();
+		System.out.println(dataFinal.getTime()-dataInicial.getTime());
+		
+		for(Tabuleiro ordenado : estados){
+		
 		for(int i = 0; i < ordenado.getOrdem(); i++){
 			for(int j = 0; j < ordenado.getOrdem(); j++){
 				System.out.print(ordenado.getMatriz()[i][j].getInf()+" ");
 			}
 			System.out.println();
 			}
+		System.out.println();
+		}
+		System.out.println(estados.size());
 	}
+	
 
 }
