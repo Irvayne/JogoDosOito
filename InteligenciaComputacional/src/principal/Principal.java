@@ -28,13 +28,13 @@ public class Principal {
 			}
 			System.out.println();
 			}
-		Arvore arvore = new Arvore(tabuleiro,23);
-		Tabuleiro ordenado = arvore.buscaProfundidade(null);
-		
+		Arvore arvore = new Arvore(tabuleiro,22);
+		//Tabuleiro ordenado = arvore.buscaProfundidade(null);
+		Tabuleiro ordenado = arvore.buscaEmLargura(null);
 		System.out.println("Ordenado"); 
 		for(int i = 0; i < ordenado.getOrdem(); i++){
 			for(int j = 0; j < ordenado.getOrdem(); j++){
-				System.out.print(ordenado.getMatriz()[i][j].getInf());
+				System.out.print(ordenado.getMatriz()[i][j].getInf()+" ");
 			}
 			System.out.println();
 			}
