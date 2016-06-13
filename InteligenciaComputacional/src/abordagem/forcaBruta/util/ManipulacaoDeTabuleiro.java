@@ -51,39 +51,42 @@ public class ManipulacaoDeTabuleiro {
 
 		if ((linhaBranco - 1) >= 0) {
 
-			Tabuleiro filho1 = new Tabuleiro(pai.getOrdem(), pai.getMatriz());
+			Tabuleiro filho1 = new Tabuleiro(pai.getOrdem(), pai.getMatriz(),pai);
 			Unidade aux = filho1.getMatriz()[linhaBranco - 1][colunaBranco];
 			filho1.getMatriz()[linhaBranco - 1][colunaBranco] = filho1.getMatriz()[linhaBranco][colunaBranco];
 			filho1.getMatriz()[linhaBranco][colunaBranco] = aux;
-
+		
 			filhos.add(filho1);
 
 		}
 
 		if ((linhaBranco + 1) < pai.getOrdem()) {
-			Tabuleiro filho2 = new Tabuleiro(pai.getOrdem(), pai.getMatriz());
+			Tabuleiro filho2 = new Tabuleiro(pai.getOrdem(), pai.getMatriz(),pai);
 			Unidade aux = filho2.getMatriz()[linhaBranco + 1][colunaBranco];
 			filho2.getMatriz()[linhaBranco + 1][colunaBranco] = filho2.getMatriz()[linhaBranco][colunaBranco];
 			filho2.getMatriz()[linhaBranco][colunaBranco] = aux;
-
+			
+			
 			filhos.add(filho2);
 
 		}
 		if ((colunaBranco - 1) >= 0) {
-			Tabuleiro filho3 = new Tabuleiro(pai.getOrdem(), pai.getMatriz());
+			Tabuleiro filho3 = new Tabuleiro(pai.getOrdem(), pai.getMatriz(), pai);
 			Unidade aux = filho3.getMatriz()[linhaBranco][colunaBranco - 1];
 			filho3.getMatriz()[linhaBranco][colunaBranco - 1] = filho3.getMatriz()[linhaBranco][colunaBranco];
 			filho3.getMatriz()[linhaBranco][colunaBranco] = aux;
-
+			
+			
 			filhos.add(filho3);
 
 		}
 		if ((colunaBranco + 1) < pai.getOrdem()) {
-			Tabuleiro filho4 = new Tabuleiro(pai.getOrdem(), pai.getMatriz());
+			Tabuleiro filho4 = new Tabuleiro(pai.getOrdem(), pai.getMatriz(), pai);
 			Unidade aux = filho4.getMatriz()[linhaBranco][colunaBranco + 1];
 			filho4.getMatriz()[linhaBranco][colunaBranco + 1] = filho4.getMatriz()[linhaBranco][colunaBranco];
 			filho4.getMatriz()[linhaBranco][colunaBranco] = aux;
-
+			
+			
 			filhos.add(filho4);
 
 		}
