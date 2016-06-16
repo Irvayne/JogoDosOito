@@ -117,27 +117,6 @@ public class TelaInicial extends JFrame {
 		contentPane.add(panel_3);
 		panel_3.setLayout(null);
 
-		// criar a funcionalidade aleatório
-		// -----------------------------------------------------------------------------------
-		JButton btnAleatrio = new JButton("Aleatório");
-		btnAleatrio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (rdbtnx.isSelected()) {
-					// Random gerador = new Random();
-					// ArrayList<Integer> lista = new ArrayList<>();
-					// while(lista.size() != 9){
-					// int num = gerador.nextInt(8);
-					// if(!verificaNum(lista, num))
-					// lista.add(num);
-					// }
-
-				}
-			}
-		});
-		btnAleatrio.setBounds(186, 337, 125, 23);
-		btnAleatrio.setEnabled(false);
-		contentPane.add(btnAleatrio);
-
 		SpinnerModel model = new SpinnerNumberModel(1, 1, 50, 1);
 		JSpinner spinner = new JSpinner(model);
 		spinner.setBounds(42, 41, 35, 25);

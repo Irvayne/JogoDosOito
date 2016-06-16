@@ -11,12 +11,12 @@ public class BuscaProfundidade {
 
 	static private int ordem;
 
-	static public List<Tabuleiro> buscaProfunidade(Tabuleiro raiz, int altura, TextArea text){
+	static public ArrayList<Tabuleiro> buscaProfunidade(Tabuleiro raiz, int altura, TextArea text){
 		ordem = raiz.getMatriz().length;
 		
 		ArvoreProfundidade arvoreProfundidade = new ArvoreProfundidade(raiz, false);
-		List<ArvoreProfundidade> nos = new ArrayList<ArvoreProfundidade>();
-		List<Tabuleiro> resultado = new ArrayList<Tabuleiro>();
+		ArrayList<ArvoreProfundidade> nos = new ArrayList<ArvoreProfundidade>();
+		ArrayList<Tabuleiro> resultado = new ArrayList<Tabuleiro>();
 		int nivel = 0;
 		
 
@@ -59,6 +59,9 @@ public class BuscaProfundidade {
 				if (nivel < altura) {
 					for(Tabuleiro profundidade: filhos){
 						
+						if(profundidade.analisaOtimo())
+							return resultado;
+						
 					for (int l = 0; l < ordem; l++) {
 						for (int c = 0; c < ordem; c++) {
 							if(c == 0){
@@ -83,8 +86,10 @@ public class BuscaProfundidade {
 					
 					
 				}else{
+					if(nos.size()>1){
 					nos.remove(nos.size() - 1);
 					arvoreProfundidade = nos.get(nos.size() - 1);
+					}
 				}
 
 			}else{
@@ -100,6 +105,8 @@ public class BuscaProfundidade {
 		}
 
 		for (ArvoreProfundidade arvore : nos) {
+			if(arvore.getTabuleiro().analisaOtimo())
+				return resultado;
 			resultado.add(arvore.getTabuleiro());
 		}
 

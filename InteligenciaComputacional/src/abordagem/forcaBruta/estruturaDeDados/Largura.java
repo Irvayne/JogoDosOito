@@ -11,7 +11,7 @@ import modelo.Tabuleiro;
 public class Largura {
 	
 	
-	public static Tabuleiro buscaEmLargura(Tabuleiro raiz, int altura, TextArea text){
+	public static ArrayList<Tabuleiro> buscaEmLargura(Tabuleiro raiz, int altura, TextArea text){
 		
 		Queue<Tabuleiro> fila = new LinkedList<>();
 		fila.add(raiz);
@@ -44,7 +44,7 @@ public class Largura {
 			}
 			
 			if(aux.analisaOtimo())
-				return aux;
+				return retornaLista(aux);
 			fila.add(aux);
 			
 			text.setText(text.getText()+"\n");
@@ -92,13 +92,30 @@ public class Largura {
 					text.setText(text.getText()+"\n");
 					
 					if(aux.analisaOtimo())
-						return aux;
+						return retornaLista(aux);
 					fila.add(aux);
 				}
 			}
 			
 		}
 		return null;
+	}
+	
+	private static ArrayList<Tabuleiro> retornaLista(Tabuleiro solucao){
+		
+		ArrayList<Tabuleiro> nos = new ArrayList<>();
+		nos.add(solucao);
+		while(solucao.getPai()!=null){
+			solucao = solucao.getPai();
+			nos.add(solucao);
+		}
+		
+		ArrayList<Tabuleiro> resultado = new ArrayList<>();
+		for (int i = nos.size()-1; i >= 0; i--) {
+			resultado.add(nos.get(i));
+		}
+		
+		return resultado;
 	}
 
 }

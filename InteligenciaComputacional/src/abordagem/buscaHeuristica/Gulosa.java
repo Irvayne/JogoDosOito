@@ -2,6 +2,7 @@ package abordagem.buscaHeuristica;
 import java.awt.TextArea;
 import java.util.ArrayList;
 import java.util.List;
+
 import abordagem.forcaBruta.util.ManipulacaoDeTabuleiro;
 import modelo.Tabuleiro;
 public class Gulosa {
@@ -10,11 +11,11 @@ public class Gulosa {
 	 * metodo busca gulosa retorna lista de expansões
 	 * @return
 	 */
-	public static List<Tabuleiro> buscaGulosa(Tabuleiro raiz, int altura, TextArea text){
+	public static ArrayList<Tabuleiro> buscaGulosa(Tabuleiro raiz, int altura, TextArea text){
 		
-		List<Tabuleiro> filhos = new ArrayList<Tabuleiro>();
+		ArrayList<Tabuleiro> filhos = new ArrayList<Tabuleiro>();
 		
-		List<Tabuleiro> nos = new ArrayList<Tabuleiro>();
+		ArrayList<Tabuleiro> nos = new ArrayList<Tabuleiro>();
 		int aux = 0;
 		
 		
@@ -45,7 +46,34 @@ public class Gulosa {
 			text.setText(text.getText()+"----------------------------------------------Nível "+aux+"----------------------------------------------");
 			text.setText(text.getText()+"\n");
 		}
-		return nos;
+		return retornaLista(raiz);
+	}
+	
+private static ArrayList<Tabuleiro> retornaLista(Tabuleiro solucao){
+		
+		ArrayList<Tabuleiro> nos = new ArrayList<>();
+		nos.add(solucao);
+		while(solucao.getPai()!=null){
+			solucao = solucao.getPai();
+			nos.add(solucao);
+		}
+		
+		ArrayList<Tabuleiro> resultado = new ArrayList<>();
+		for (int i = nos.size()-1; i >= 0; i--) {
+			resultado.add(nos.get(i));
+		}
+		
+//		for(Tabuleiro aux:resultado){
+//			for (int i = 0; i < 3; i++) {
+//				for (int j = 0; j < 3; j++) {
+//					System.out.print(aux.getMatriz()[i][j].getInf());
+//				}
+//				System.out.println();
+//			}
+//			System.out.println();
+//		}
+		
+		return resultado;
 	}
 	/**
 	 * Acha o melhor uma lista de filhos
