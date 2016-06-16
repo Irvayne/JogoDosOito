@@ -32,10 +32,7 @@ public class Profundidade {
 			}
 			Tabuleiro aux = nos.pop(); 
 			if(aux.analisaOtimo())
-				return aux;
-			
-			
-				
+				return aux;	
 			
 		}
 		

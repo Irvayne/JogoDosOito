@@ -7,6 +7,9 @@ public class Tabuleiro {
 	private Tabuleiro pai;
 	public int altura;
 	private int mascara[][];
+	private int custoGeracao;
+	private boolean visitado;
+	
 
 	public Tabuleiro(int tam) {
 		ordem = tam;
@@ -145,6 +148,23 @@ public class Tabuleiro {
 	}
 	public void setMascara(int[][] mascara) {
 		this.mascara = mascara;
+	}
+
+	public boolean isVisitado() {
+		return visitado;
+	}
+
+	public void setVisitado(boolean visitado) {
+		this.visitado = visitado;
+	}
+
+
+	public int getCustoGeracao() {
+		return custoGeracao;
+	}
+
+	public void setCustoGeracao(int custoGeracao) {
+		this.custoGeracao = custoGeracao;
 	}
 
 }

@@ -55,7 +55,7 @@ public class ManipulacaoDeTabuleiro {
 			Unidade aux = filho1.getMatriz()[linhaBranco - 1][colunaBranco];
 			filho1.getMatriz()[linhaBranco - 1][colunaBranco] = filho1.getMatriz()[linhaBranco][colunaBranco];
 			filho1.getMatriz()[linhaBranco][colunaBranco] = aux;
-		
+			filho1.setPai(pai);
 			filhos.add(filho1);
 
 		}
@@ -65,7 +65,7 @@ public class ManipulacaoDeTabuleiro {
 			Unidade aux = filho2.getMatriz()[linhaBranco + 1][colunaBranco];
 			filho2.getMatriz()[linhaBranco + 1][colunaBranco] = filho2.getMatriz()[linhaBranco][colunaBranco];
 			filho2.getMatriz()[linhaBranco][colunaBranco] = aux;
-			
+			filho2.setPai(pai);
 			
 			filhos.add(filho2);
 
@@ -75,7 +75,7 @@ public class ManipulacaoDeTabuleiro {
 			Unidade aux = filho3.getMatriz()[linhaBranco][colunaBranco - 1];
 			filho3.getMatriz()[linhaBranco][colunaBranco - 1] = filho3.getMatriz()[linhaBranco][colunaBranco];
 			filho3.getMatriz()[linhaBranco][colunaBranco] = aux;
-			
+			filho3.setPai(pai);
 			
 			filhos.add(filho3);
 
@@ -85,7 +85,7 @@ public class ManipulacaoDeTabuleiro {
 			Unidade aux = filho4.getMatriz()[linhaBranco][colunaBranco + 1];
 			filho4.getMatriz()[linhaBranco][colunaBranco + 1] = filho4.getMatriz()[linhaBranco][colunaBranco];
 			filho4.getMatriz()[linhaBranco][colunaBranco] = aux;
-			
+			filho4.setPai(pai);
 			
 			filhos.add(filho4);
 
