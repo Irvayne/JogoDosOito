@@ -6,7 +6,9 @@ import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,6 +25,7 @@ import abordagem.aEstrela.Aestrela;
 import abordagem.buscaHeuristica.Gulosa;
 import abordagem.forcaBruta.estruturaDeDados.Largura;
 import abordagem.forcaBruta.estruturaDeDados.profundidade.BuscaProfundidade;
+import modelo.NosExpandidos;
 import modelo.Tabuleiro;
 import modelo.Unidade;
 
@@ -35,36 +38,59 @@ public class TelaRelatorio extends JFrame {
 	JPanel panel_1;
 	int altura;
 	JPanel panel;
-	
+
 	ArrayList<Tabuleiro> listaProfundidade;
 	ArrayList<Tabuleiro> listaLargura;
 	ArrayList<Tabuleiro> listaGuloso;
 	ArrayList<Tabuleiro> listaAEstrela;
-	
+
 	JLabel lblLarguraSituacao;
 	JLabel lblProfundidadeSituacao;
 	JLabel lblGulosoSituacao;
 	JLabel lblAEstrelaSituacao;
-	
-	
+
+	JLabel lblGif;
+
+	NosExpandidos nosLargura;
+	NosExpandidos nosProfundidade;
+	NosExpandidos nosGuloso;
+	NosExpandidos nosAEstrela;
+
+	long tempoLargura;
+	long tempoProfundidade;
+	long tempoGuloso;
+	long tempoAEstrela;
+
 	/**
 	 * Create the frame.
 	 */
 	public TelaRelatorio(Unidade m[][], int a) {
-		
+
+		nosLargura = new NosExpandidos();
+		nosProfundidade = new NosExpandidos();
+		nosGuloso = new NosExpandidos();
+		nosAEstrela = new NosExpandidos();
 		matriz = m;
 		altura = a;
-		
+
 		setResizable(false);
 		textAreaGuloso = new TextArea();
+		textAreaGuloso.setBackground(Color.WHITE);
+		textAreaGuloso.setEditable(false);
 		textAreaGuloso.setBounds(10, 10, 464, 217);
 		textAreaLargura = new TextArea();
+		textAreaLargura.setEditable(false);
+		textAreaLargura.setBackground(Color.WHITE);
 		textAreaLargura.setBounds(10, 10, 464, 217);
 		textAreaProfundidade = new TextArea();
+		textAreaProfundidade.setBackground(Color.WHITE);
+		textAreaProfundidade.setEditable(false);
 		textAreaProfundidade.setBounds(10, 10, 464, 217);
 		textAreaAEstrela = new TextArea();
+		textAreaAEstrela.setBackground(Color.WHITE);
+		textAreaAEstrela.setEditable(false);
 		textAreaAEstrela.setBounds(10, 10, 464, 217);
-		
+
 		setTitle("Puzzle Game");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 400);
@@ -87,60 +113,57 @@ public class TelaRelatorio extends JFrame {
 		panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
 		panel_1.setBorder(new TitledBorder(null, "Tabuleiro", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 11, 278, 267);
+		panel_1.setBounds(10, 11, 250, 267);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
-		
+
+		lblGif = new JLabel(new ImageIcon("img//loading.gif"));
+		lblGif.setBounds(10, 32, 229, 204);
+		panel_1.add(lblGif);
+
 		lblInformaes = new JLabel("Informações :");
 		lblInformaes.setBounds(298, 11, 101, 14);
 		panel.add(lblInformaes);
-		
+
 		lblAlturaDefinidaPara = new JLabel("Altura definida para busca :");
-		lblAlturaDefinidaPara.setBounds(298, 36, 189, 14);
+		lblAlturaDefinidaPara.setBounds(270, 36, 189, 14);
 		panel.add(lblAlturaDefinidaPara);
-		
-		label_2 = new JLabel(altura+"");
+
+		label_2 = new JLabel(altura + "");
 		label_2.setBounds(458, 36, 29, 14);
 		panel.add(label_2);
-		
+
 		JLabel lblLargura = new JLabel("Largura : ");
-		lblLargura.setBounds(298, 61, 101, 14);
+		lblLargura.setBounds(270, 61, 101, 14);
 		panel.add(lblLargura);
-		
+
 		JLabel lblProfundidade = new JLabel("Profundidade :");
-		lblProfundidade.setBounds(298, 86, 101, 14);
+		lblProfundidade.setBounds(270, 86, 101, 14);
 		panel.add(lblProfundidade);
-		
+
 		JLabel lblGuloso = new JLabel("Guloso :");
-		lblGuloso.setBounds(298, 111, 101, 14);
+		lblGuloso.setBounds(270, 111, 101, 14);
 		panel.add(lblGuloso);
-		
+
 		JLabel lblA = new JLabel("A* :");
-		lblA.setBounds(298, 136, 101, 14);
+		lblA.setBounds(270, 136, 101, 14);
 		panel.add(lblA);
-		
-		lblLarguraSituacao = new JLabel("Executando...");
-		lblLarguraSituacao.setBounds(392, 61, 95, 14);
+
+		lblLarguraSituacao = new JLabel("");
+		lblLarguraSituacao.setBounds(358, 61, 141, 14);
 		panel.add(lblLarguraSituacao);
-		
-		lblProfundidadeSituacao = new JLabel("Executando...");
-		lblProfundidadeSituacao.setBounds(392, 86, 95, 14);
+
+		lblProfundidadeSituacao = new JLabel("");
+		lblProfundidadeSituacao.setBounds(358, 86, 141, 14);
 		panel.add(lblProfundidadeSituacao);
-		
-		lblGulosoSituacao = new JLabel("Executando...");
-		lblGulosoSituacao.setBounds(392, 111, 95, 14);
+
+		lblGulosoSituacao = new JLabel("");
+		lblGulosoSituacao.setBounds(358, 111, 141, 14);
 		panel.add(lblGulosoSituacao);
-		
-		lblAEstrelaSituacao = new JLabel("Executando...");
-		lblAEstrelaSituacao.setBounds(392, 136, 95, 14);
+
+		lblAEstrelaSituacao = new JLabel("");
+		lblAEstrelaSituacao.setBounds(358, 136, 141, 14);
 		panel.add(lblAEstrelaSituacao);
-		
-		
-		//Preencher a area de texto de cada algoritmo
-		new Thread(threadGuloso).start();
-		new Thread(threadLargura).start();
-		new Thread(threadProfundidade).start();
-		new Thread(threadAEstrela).start();
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.WHITE);
@@ -151,13 +174,7 @@ public class TelaRelatorio extends JFrame {
 		table.setEnabled(false);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		table.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
-		table.setModel(new DefaultTableModel(
-				new Object[][] { { " Algoritmo", " Tempo de Execu\u00E7\u00E3o", "N\u00F3s expandidos" },
-						{ " Profundidade", "x", "y" }, { " Largura", "x", "y" }, { " Guloso", "x", "y" },
-						{ " A*", "x", "y" }, },
-				new String[] { "Algoritmo", " Tempo de Execu\u00E7\u00E3o", "N\u00F3s expandidos" }));
-		
-	
+		desenhaTabela();
 		table.getColumnModel().getColumn(0).setPreferredWidth(135);
 		table.getColumnModel().getColumn(1).setPreferredWidth(169);
 		table.getColumnModel().getColumn(2).setPreferredWidth(127);
@@ -166,56 +183,59 @@ public class TelaRelatorio extends JFrame {
 		table.setBounds(20, 55, 468, 80);
 
 		panel_2.add(table);
-		
+
+		// Preencher a area de texto de cada algoritmo
+		new Thread(threadGuloso).start();
+		// new Thread(threadLargura).start();
+		// new Thread(threadProfundidade).start();
+		// new Thread(threadAEstrela).start();
+
 		lblRelatrioTcnico = new JLabel("Relatório Informativo");
 		lblRelatrioTcnico.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblRelatrioTcnico.setBounds(168, 11, 191, 33);
 		panel_2.add(lblRelatrioTcnico);
-		
+
 		panel_3 = new JPanel();
 		panel_3.setBackground(Color.WHITE);
 		tabbedPane.addTab("Algoritmo", null, panel_3, null);
 		panel_3.setLayout(null);
-		
+
 		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane_1.setBounds(10, 11, 489, 265);
 		panel_3.add(tabbedPane_1);
-		
+
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(Color.WHITE);
 		tabbedPane_1.addTab("Profundidade", null, panel_4, null);
 		panel_4.setLayout(null);
-		
-		
+
 		panel_4.add(textAreaProfundidade);
-		
+
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(Color.WHITE);
 		tabbedPane_1.addTab("Largura", null, panel_5, null);
 		panel_5.setLayout(null);
-		
-		
+
 		panel_5.add(textAreaLargura);
-		
+
 		JPanel panel_6 = new JPanel();
 		panel_6.setBackground(Color.WHITE);
 		tabbedPane_1.addTab("Guloso", null, panel_6, null);
 		panel_6.setLayout(null);
-		
+
 		panel_6.add(textAreaGuloso);
-		
+
 		JPanel panel_7 = new JPanel();
 		panel_7.setBackground(Color.WHITE);
 		tabbedPane_1.addTab("A*", null, panel_7, null);
 		panel_7.setLayout(null);
-		
-		
+
 		panel_7.add(textAreaAEstrela);
-		
+
 		btnNewButton_1 = new JButton("Voltar");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				TelaInicial inicial = new TelaInicial();
 				dispose();
 				inicial.show();
@@ -234,13 +254,22 @@ public class TelaRelatorio extends JFrame {
 		// }
 	}
 
+	private void desenhaTabela() {
+		table.setModel(new DefaultTableModel(
+				new Object[][] { { " Algoritmo", " Tempo de Execu\u00E7\u00E3o (ms)", "N\u00F3s expandidos" },
+						{ " Profundidade", tempoProfundidade, nosProfundidade.qnt },
+						{ " Largura", tempoLargura, nosLargura.qnt }, { " Guloso", tempoGuloso, nosGuloso.qnt },
+						{ " A*", tempoAEstrela, nosAEstrela.qnt }, },
+				new String[] { "Algoritmo", " Tempo de Execu\u00E7\u00E3o", "N\u00F3s expandidos" }));
+
+	}
+
 	private Runnable thread3x3 = new Runnable() {
 		public void run() {
-			
-			
+
+			lblGif.disable();
 			label_1 = new JLabel("");
-			
-				
+
 			label_1.setBounds(473, 30, 26, 14);
 			panel.add(label_1);
 			panel.repaint();
@@ -354,7 +383,7 @@ public class TelaRelatorio extends JFrame {
 				}
 				try {
 					panel_1.repaint();
-					Thread.sleep(900);
+					Thread.sleep(1500);
 
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -365,16 +394,15 @@ public class TelaRelatorio extends JFrame {
 		}
 
 	};
-	
+
 	private Runnable thread4x4 = new Runnable() {
 		public void run() {
-			
-			
+
 			label_1 = new JLabel("");
 			label_1.setBounds(473, 30, 26, 14);
 			panel.add(label_1);
 			panel.repaint();
-			
+
 			for (int qnt = 0; qnt < todos.size(); qnt++) {
 				panel_1.removeAll();
 				for (int l = 0; l < 4; l++) {
@@ -573,12 +601,10 @@ public class TelaRelatorio extends JFrame {
 		}
 
 	};
-	
+
 	private Runnable thread5x5 = new Runnable() {
 		public void run() {
-		
-		
-			
+
 			label_1 = new JLabel("");
 			label_1.setBounds(473, 30, 26, 14);
 			panel.add(label_1);
@@ -880,142 +906,190 @@ public class TelaRelatorio extends JFrame {
 		}
 
 	};
-	
+
 	private Runnable threadGuloso = new Runnable() {
 		public void run() {
-			
-			listaGuloso = Gulosa.buscaGulosa(new Tabuleiro(matriz.length, matriz, null), altura, textAreaGuloso);
-			
-			
-			
-			if(todos==null){
-				if(listaGuloso.get(listaGuloso.size() - 1).analisaOtimo()){
+
+			lblProfundidadeSituacao.setText("Em espera...");
+			lblLarguraSituacao.setText("Em espera...");
+			lblAEstrelaSituacao.setText("Em espera...");
+			lblGulosoSituacao.setText("Executando...");
+
+			Date inicio = new Date();
+			try {
+				listaGuloso = Gulosa.buscaGulosa(new Tabuleiro(matriz.length, matriz, null), 500, textAreaGuloso,
+						nosGuloso);
+			} catch (Exception e) {
+
+			}
+			Date fim = new Date();
+
+			tempoGuloso = fim.getTime() - inicio.getTime();
+			desenhaTabela();
+
+			if (todos == null && listaGuloso != null) {
+				if (listaGuloso.get(listaGuloso.size() - 1).analisaOtimo()) {
 					lblGulosoSituacao.setText("Concluído");
-					//todos = listaGuloso;
-					//System.out.println("Escolheu Guloso");
-					//Execução do sistema----------------------------------------------
-//					if(matriz.length==3)
-//						new Thread(thread3x3).start();
-//					if(matriz.length==4)
-//						new Thread(thread4x4).start();
-//					if(matriz.length==5)
-//						new Thread(thread5x5).start();
-					
-				}else{
-					lblGulosoSituacao.setText("Solucao nao encontrada");
+					todos = listaGuloso;
+					System.out.println("Escolheu Guloso");
+					// Execução do
+					// sistema----------------------------------------------
+					if (matriz.length == 3)
+						new Thread(thread3x3).start();
+					if (matriz.length == 4)
+						new Thread(thread4x4).start();
+					if (matriz.length == 5)
+						new Thread(thread5x5).start();
+
+				} else {
+					lblGulosoSituacao.setText("Solução não encontrada");
 				}
 				//
-			//
-			}else{
-				if(listaGuloso.get(listaGuloso.size() - 1).analisaOtimo()){
+				//
+			} else {
+				if (listaGuloso != null && listaGuloso.get(listaGuloso.size() - 1).analisaOtimo()) {
 					lblGulosoSituacao.setText("Concluído");
-				}else{
-					lblGulosoSituacao.setText("Solucao nao encontrada");
+				} else {
+					lblGulosoSituacao.setText("Solução não encontrada");
 				}
 			}
+
+			new Thread(threadAEstrela).start();
 		}
 	};
-	
+
 	private Runnable threadLargura = new Runnable() {
 		public void run() {
-			
-			
-				listaLargura = Largura.buscaEmLargura(new Tabuleiro(matriz.length, matriz, null), altura, textAreaLargura);
-				
-				
-				
-				if(todos== null && listaLargura!=null){
-					if(listaLargura.get(listaLargura.size()-1).analisaOtimo()){
-						lblLarguraSituacao.setText("Concluído");
-						todos = listaLargura;
-						System.out.println("Escolheu Largura");
-						//Execução do sistema----------------------------------------------
-						if(matriz.length==3)
-							new Thread(thread3x3).start();
-						if(matriz.length==4)
-							new Thread(thread4x4).start();
-						if(matriz.length==5)
-							new Thread(thread5x5).start();
-					}else{
-						lblLarguraSituacao.setText("Solucao nao encontrada");
-					}
-					
-				}else{
-					if(listaLargura!=null && listaLargura.get(listaLargura.size()-1).analisaOtimo())
-						lblLarguraSituacao.setText("Concluído");
-					else
-						lblLarguraSituacao.setText("Solucao nao encontrada");
-						
+
+			lblProfundidadeSituacao.setText("Em espera...");
+			lblLarguraSituacao.setText("Executando...");
+
+			Date inicio = new Date();
+			listaLargura = Largura.buscaEmLargura(new Tabuleiro(matriz.length, matriz, null), altura, textAreaLargura,
+					nosLargura);
+			Date fim = new Date();
+
+			tempoLargura = fim.getTime() - inicio.getTime();
+
+			desenhaTabela();
+			if (todos == null && listaLargura != null) {
+				if (listaLargura.get(listaLargura.size() - 1).analisaOtimo()) {
+					lblLarguraSituacao.setText("Concluído");
+					todos = listaLargura;
+					System.out.println("Escolheu Largura");
+					// Execução do
+					// sistema----------------------------------------------
+					if (matriz.length == 3)
+						new Thread(thread3x3).start();
+					if (matriz.length == 4)
+						new Thread(thread4x4).start();
+					if (matriz.length == 5)
+						new Thread(thread5x5).start();
+				} else {
+					lblLarguraSituacao.setText("Solução não encontrada");
 				}
+
+			} else {
+				if (listaLargura != null && listaLargura.get(listaLargura.size() - 1).analisaOtimo())
+					lblLarguraSituacao.setText("Concluído");
+				else
+					lblLarguraSituacao.setText("Solução não encontrada");
+
+			}
+
+			new Thread(threadProfundidade).start();
 		}
 	};
-	
+
 	private Runnable threadProfundidade = new Runnable() {
 		public void run() {
-			
-			listaProfundidade = BuscaProfundidade.buscaProfunidade(new Tabuleiro(matriz.length, matriz, null), altura, textAreaProfundidade);
-			
-			
-			
-			if(todos==null && listaProfundidade.size()>0){
-				if(listaProfundidade.get(listaProfundidade.size()-1).analisaOtimo()){
+
+			lblProfundidadeSituacao.setText("Executando...");
+
+			Date inicio = new Date();
+			listaProfundidade = BuscaProfundidade.buscaProfunidade(new Tabuleiro(matriz.length, matriz, null), altura,
+					textAreaProfundidade, nosProfundidade);
+			Date fim = new Date();
+
+			tempoProfundidade = fim.getTime() - inicio.getTime();
+
+			desenhaTabela();
+
+			if (todos == null && listaProfundidade.size() > 0) {
+				if (listaProfundidade.get(listaProfundidade.size() - 1).analisaOtimo()) {
 					lblProfundidadeSituacao.setText("Concluído");
 					todos = listaProfundidade;
 					System.out.println("Escolheu Profundidade");
-					//Execução do sistema----------------------------------------------
-					if(matriz.length==3)
+					// Execução do
+					// sistema----------------------------------------------
+					if (matriz.length == 3)
 						new Thread(thread3x3).start();
-					if(matriz.length==4)
+					if (matriz.length == 4)
 						new Thread(thread4x4).start();
-					if(matriz.length==5)
+					if (matriz.length == 5)
 						new Thread(thread5x5).start();
-				}else{
-					lblProfundidadeSituacao.setText("Solucao nao encontrada");
+				} else {
+					lblProfundidadeSituacao.setText("Solução não encontrada");
 				}
-				
-			}else{
-				if(listaProfundidade.size() > 0 && listaProfundidade.get(listaProfundidade.size()-1).analisaOtimo()){
+
+			} else {
+				if (listaProfundidade.size() > 0
+						&& listaProfundidade.get(listaProfundidade.size() - 1).analisaOtimo()) {
 					lblProfundidadeSituacao.setText("Concluído");
-				}else{
-					lblProfundidadeSituacao.setText("Solucao nao encontrada");
+				} else {
+					lblProfundidadeSituacao.setText("Solução não encontrada");
 				}
 			}
+			// new Thread(threadAEstrela).start();
 		}
 	};
-	
+
 	private Runnable threadAEstrela = new Runnable() {
 		public void run() {
-			
-			listaAEstrela =  Aestrela.buscaAEstrela(new Tabuleiro(matriz.length, matriz, null), altura, textAreaAEstrela);
-			
+
+			lblProfundidadeSituacao.setText("Em espera...");
+			lblLarguraSituacao.setText("Em espera...");
+			lblAEstrelaSituacao.setText("Executando...");
+
+			Date inicio = new Date();
+			listaAEstrela = Aestrela.buscaAEstrela(new Tabuleiro(matriz.length, matriz, null), altura, textAreaAEstrela,
+					nosAEstrela);
+			Date fim = new Date();
+			tempoAEstrela = fim.getTime() - inicio.getTime();
+			desenhaTabela();
+
 			lblAEstrelaSituacao.setText("Concluído");
-			
-			if(todos==null){
-				if(listaAEstrela.get(listaAEstrela.size()-1).analisaOtimo()){
+
+			if (todos == null) {
+				if (listaAEstrela.get(listaAEstrela.size() - 1).analisaOtimo()) {
 					lblAEstrelaSituacao.setText("Concluído");
 					todos = listaAEstrela;
 					System.out.println("Escolheu A*");
-					//Execução do sistema----------------------------------------------
-					if(matriz.length==3)
+					// Execução do
+					// sistema----------------------------------------------
+					if (matriz.length == 3)
 						new Thread(thread3x3).start();
-					if(matriz.length==4)
+					if (matriz.length == 4)
 						new Thread(thread4x4).start();
-					if(matriz.length==5)
+					if (matriz.length == 5)
 						new Thread(thread5x5).start();
-				}else{
-					lblAEstrelaSituacao.setText("Solucao nao encontrada");
+				} else {
+					lblAEstrelaSituacao.setText("Solução não encontrada");
 				}
-				
-			}else{
-				if(listaAEstrela.get(listaAEstrela.size()-1).analisaOtimo()){
+
+			} else {
+				if (listaAEstrela.get(listaAEstrela.size() - 1).analisaOtimo()) {
 					lblAEstrelaSituacao.setText("Concluído");
-				}else{
-					lblAEstrelaSituacao.setText("Solucao nao encontrada");
+				} else {
+					lblAEstrelaSituacao.setText("Solução não encontrada");
 				}
 			}
+			new Thread(threadLargura).start();
+
 		}
+
 	};
-	
+
 	private TextArea textAreaAEstrela;
 	private TextArea textAreaGuloso;
 	private JTable table;
