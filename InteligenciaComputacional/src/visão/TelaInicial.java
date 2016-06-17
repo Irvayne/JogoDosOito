@@ -128,7 +128,7 @@ public class TelaInicial extends JFrame {
 				// botao da matriz
 				// 3x3--------------------------------------------------------------------------------------------
 				if (rdbtnx.isSelected()) {
-					System.out.println("entrou");
+					
 					Unidade matrizDeUnidade[][] = new Unidade[3][3];
 					for (int l = 0; l < 3; l++) {
 						for (int c = 0; c < 3; c++) {
@@ -146,7 +146,7 @@ public class TelaInicial extends JFrame {
 				// botao da matriz
 				// 4x4---------------------------------------------------------------------------------------
 				if (rdbtnx_1.isSelected()) {
-					System.out.println("entrou");
+					
 					Unidade matrizDeUnidade[][] = new Unidade[4][4];
 					for (int l = 0; l < 4; l++) {
 						for (int c = 0; c < 4; c++) {
@@ -164,7 +164,7 @@ public class TelaInicial extends JFrame {
 				// botao da matriz
 				// 5x5---------------------------------------------------------------------------------------
 				if (rdbtnx_2.isSelected()) {
-					System.out.println("entrou");
+					
 					Unidade matrizDeUnidade[][] = new Unidade[5][5];
 					for (int l = 0; l < 5; l++) {
 						for (int c = 0; c < 5; c++) {

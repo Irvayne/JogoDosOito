@@ -17,6 +17,10 @@ public class Gulosa {
 	 */
 	public static ArrayList<Tabuleiro> buscaGulosa(Tabuleiro raiz, int altura, TextArea text, NosExpandidos nosExpandidos ) {
 
+		text.setText(text.getText() + "----------------------------------------------Nível " + 1
+				+ "----------------------------------------------\n");
+		
+		
 		ArrayList<Tabuleiro> filhos = new ArrayList<Tabuleiro>();
 
 		ArrayList<Tabuleiro> nos = new ArrayList<Tabuleiro>();

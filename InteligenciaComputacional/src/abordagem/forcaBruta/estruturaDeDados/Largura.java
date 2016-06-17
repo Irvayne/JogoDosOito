@@ -16,6 +16,8 @@ public class Largura {
 		Queue<Tabuleiro> fila = new LinkedList<>();
 		fila.add(raiz);
 
+		text.setText(text.getText() + "----------------------------------------------Nível " + 1
+				+ "----------------------------------------------\n");
 		Tabuleiro pai = fila.poll();
 		nosExpandidos.qnt++;
 		for (int i = 0; i < raiz.getOrdem(); i++) {
@@ -53,7 +55,7 @@ public class Largura {
 		Tabuleiro paiNew = null;
 		for (int nivel = 1; nivel < altura; nivel++) {
 
-			text.setText(text.getText() + "----------------------------------------------Nível " + nivel
+			text.setText(text.getText() + "----------------------------------------------Nível " + nivel+1
 					+ "----------------------------------------------");
 			text.setText(text.getText() + "\n");
 
